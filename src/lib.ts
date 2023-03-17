@@ -50,7 +50,7 @@ async function getSetupPropsFromScript(code: string, id: string, start: number) 
     else resolve(data)
   }))
   const regexContent = new RegExp(`export +interface +${props} +{.*?}.*?[\n|\r\n]`, 'is')
-  const content = anotherImport + fileStr.match(regexContent)?.[0]
+  const content = anotherImport + trimComment(fileStr.match(regexContent)![0])
 
   return {
     props,
@@ -90,7 +90,7 @@ function parseScript(code: string) {
   const startIndex = code.indexOf(startTag) + startTag.length
   const endIndex = code.indexOf('</script>', startIndex)
   const content = code.slice(startIndex, endIndex)
-  const isEmpty = content.replace(/\/\/.*/ig, '').replace(/\/\*\*.*\*\//igs, '').trim().length === 0
+  const isEmpty = trimComment(content).trim().length === 0
   const contentPos = { start: startIndex, end: endIndex }
   const scriptPos = {
     start: startIndex - startTag.length,
@@ -168,4 +168,11 @@ function parseQuotes(str: string): string {
     return str.slice(1, -1)
 
   return str
+}
+
+function trimComment(str: string) {
+  if (typeof str !== 'string' || str.length === 0)
+    return ''
+
+  return str.replace(/\/\/.*/ig, '').replace(/\/\*\*.*?\*\//igs, '')
 }

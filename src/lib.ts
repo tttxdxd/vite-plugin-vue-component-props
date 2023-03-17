@@ -49,7 +49,7 @@ async function getSetupPropsFromScript(code: string, id: string, start: number) 
       reject(err)
     else resolve(data)
   }))
-  const regexContent = new RegExp(`export +interface +${props} +{.*?}.*?[\n|\r\n]`, 'is')
+  const regexContent = new RegExp(`export +interface +${props} +{([^{}]|{(?:[^{}]|{[^{}]*})*})*}.*?[\n|\r\n]`, 'is')
   const content = anotherImport + trimComment(fileStr.match(regexContent)![0])
 
   return {

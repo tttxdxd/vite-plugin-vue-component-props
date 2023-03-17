@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import type { ComponentNameOptions } from '../src'
+import type { ComponentPropsOptions } from '../src'
 import plugin from '../src'
 
-function createVitePlugin(options?: ComponentNameOptions) {
+function createVitePlugin(options?: ComponentPropsOptions) {
   const { name, transform } = plugin(options)
 
   return { name, transform: transform as any }
@@ -13,7 +13,7 @@ describe('plugin test', () => {
   it('plugin name', () => {
     const { name } = createVitePlugin()
 
-    expect(name).toEqual('vite:component-name-support')
+    expect(name).toEqual('vite:component-props-support')
   })
 
   it('not a vue file.', async () => {
